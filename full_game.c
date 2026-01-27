@@ -21,6 +21,8 @@
 #define LIFE 'L'
 #define EXTRACTION 'X'
 
+//players symbols
+
 #define P1 '@'
 #define P2 '&'
 #define P3 '$'
@@ -44,6 +46,7 @@ typedef struct {
     int current_turn;
     int extraction_row;
     int extraction_col;
+
     FILE *log;
 } Game;
 
@@ -153,7 +156,7 @@ void place_items(Game *game) {
     }
 
     /* Walls */
-    int walls = (game->size * game->size) / 8;
+    int walls = game->size;
     for (int i = 0; i < walls; i++) {
         do {
             r = rand() % game->size;
@@ -173,12 +176,8 @@ void place_items(Game *game) {
 }
 
 void display_grid(Game *game) {
-    /* Print top border */
-    printf("\n    ");
-    for (int i = 0; i < game->size; i++) {
-        printf("+---");
-    }
-    printf("+\n");
+
+    printf("\n");
 
     /* Print column numbers starting from 1 */
     printf("    ");
@@ -186,7 +185,7 @@ void display_grid(Game *game) {
         printf("  %2d", i);
     printf("\n");
 
-    /* Print second border */
+    /* Print top border*/
     printf("    ");
     for (int i = 0; i < game->size; i++) {
         printf("+---");
@@ -493,13 +492,14 @@ int main() {
     }
     else if (part == 3) {
         int opt;
-        printf("1. HHH  2. HHC  3. HCC\nChoice: ");
+        printf("1. Human vs Human vs Human \n2. Human vs Human vs Computer \n3. Human vs Computer vs Computer\nChoice: ");
         scanf("%d", &opt);
-        int mask = (opt == 1) ? 0b111 : (opt == 2) ? 0b011 : 0b001;
-        game = init_game(size, 3, mask);
+        
+        game = init_game(size, 3, (opt == 1) ? 0b111 : (opt == 2) ? 0b011 : 0b001);
     }
     else {
         printf("Invalid part selection!\n");
+
         return 1;
     }
 
